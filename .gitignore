@@ -3,3 +3,26 @@
 ################################################################################
 
 /packages
+/src/bin/Debug
+/src/obj/Debug
+/sample/bin/WebGrease.dll
+/sample/bin/Trade.pdb
+/sample/bin/System.Web.WebPages.xml
+/sample/bin/System.Web.WebPages.Razor.xml
+/sample/bin/System.Web.WebPages.Razor.dll
+/sample/bin/System.Web.WebPages.dll
+/sample/bin/System.Web.WebPages.Deployment.xml
+/sample/bin/System.Web.WebPages.Deployment.dll
+/sample/bin/System.Web.Razor.xml
+/sample/bin/System.Web.Razor.dll
+/sample/bin/System.Web.Optimization.xml
+/sample/bin/System.Web.Optimization.dll
+/sample/bin/System.Web.Mvc.xml
+/sample/bin/System.Web.Mvc.dll
+/sample/bin/System.Web.Helpers.xml
+/sample/bin/System.Web.Helpers.dll
+/sample/bin/roslyn
+/sample/bin/Microsoft.Web.Infrastructure.dll
+/sample/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+/sample/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+/sample/obj/Debug

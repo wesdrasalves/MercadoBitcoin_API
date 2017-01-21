@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Mercado Bitcoin";
+}
+
+<script>
+
+    function cancelOrder(order)
+    {
+        $.ajax({
+            url: "/Home/cancelOrder",
+            method: "post",
+            data: {
+                orderId: order
+            },
+            success: function (data) {
+                if (data.returnExecute) {
+                    alert("Ordem cancelada com sucesso.");
+                    window.location = "/";
+                }
+                else { alert("Erro ao cancelar ordem.\r\n\r\n" + data.message); }
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $("#btnBuyBit").click(function() {
+            alert('entrouBuy');
+            $.ajax({
+                url: "/Home/BuyBitCoin",
+                method: "post",
+                data: {
+                        volume: $("#txtQtdBitBuy").val(),
+                        price: $("#txtVlrBitBuy").val()
+                },
+                success: function(data)
+                {
+                    if (data.returnExecute) {
+                        alert("Ordem de compra efetuada com sucesso.");
+                        window.location = "/";
+                    }
+                    else { alert("Erro ao efetuar compra.\r\n\r\n" + data.message); }
+                }
+            });
+        });
+
+        $("#btnSellBit").click(function() {
+            alert('entrouSell');
+            $.ajax({
+                url: "/Home/SellBitCoin",
+                method: "post",
+                data: {
+                    volume: $("#txtQtdBitSell").val(),
+                    price: $("#txtVlrBitSell").val()
+                },
+                success: function(data) {
+                    if (data.returnExecute) {
+                        alert("Ordem de venda efetuada com sucesso.");
+                        window.location = "/";
+                    }
+                    else { alert("Erro ao efetuar venda.\r\n\r\n" + data.message); }
+                }
+            });
+        });
+
+        $.ajax({
+            url: "/Home/getMyOpenOrders",
+            method: "post",
+            success: function (data)
+            {
+                if(data.returnExecute)
+                {
+                    $.each(data.returnData, function (index, value) {
+                        var div = "<tr>";
+
+                        div += "<td>" + value.id + "</td>";
+                        div += "<td>" + value.quantity + "</td>";
+                        div += "<td>" + value.price + "</td>";
+                        div += "<td><a href=\"javascript:cancelOrder(" + value.id + ");\">Cancelar</a></td>";
+
+                        div += "</tr>";
+
+                        $("#openOrders").append(div);
+                    });
+                }
+            }
+        });
+
+    });
+
+</script>
+
+<div class="page-header">
+    <h1>Meu MercadoBitcoin</h1>
+    <div class="row">
+        <div id="infoReal" class="col-md-4">
+            <div class="col-md-6">
+                Disponivel R$<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceBRLAvaliable.ToString("00000.00"))
+            </div>
+            <div class="col-md-4">
+                Total R$<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceBRLTotal.ToString("00000.00"))
+            </div>
+        </div>
+        <div id="infoBit" class="col-md-4">
+            <div class="col-md-6">
+                Disponivel BitCoin<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceBTCAvaliable.ToString("00.00000"))
+            </div>
+            <div class="col-md-4">
+                Total BitCoin<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceBTCTotal.ToString("00.00000"))
+            </div>
+        </div>
+        <div id="infoLite" class="col-md-4">
+            <div class="col-md-6">
+                Disponivel LiteCoin<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceLTCAvaliable.ToString("00.00000"))
+            </div>
+            <div class="col-md-4">
+                Total LiteCoin<br />
+                @(ViewBag.Funds == null ? "" : ViewBag.Funds.balanceLTCTotal.ToString("00.00000"))
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Compra de Bit</h2>
+        <p>
+            <table align="center">
+                <tr>
+                    <td>
+                        Quantidade Bit <br />
+                        <input type="text" id="txtQtdBitBuy" name="txtQtdBitBuy" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Valor Bit<br />
+                        <input type="text" id="txtVlrBitBuy" name="txtVlrBitBuy" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="btnBuyBit" value="Comprar" />
+                    </td>
+                </tr>
+            </table>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Venda de Bit</h2>
+        <p>
+            <table align="center">
+                <tr>
+                    <td>
+                        Quantidade Bit<br />
+                        <input type="text" id="txtQtdBitSell" name="txtQtdBitSell" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Valor Bit<br />
+                        <input type="text" id="txtVlrBitSell" name="txtVlrBitSell" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" id="btnSellBit" value="Vender" />
+                    </td>
+                </tr>
+            </table>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Ordens Abertas</h2>
+        <table id="openOrders" border="1">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Quantidade
+                    </th>
+                    <th>
+                        Valor
+                    </th>
+                    <th>
+                        Cancelar
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
